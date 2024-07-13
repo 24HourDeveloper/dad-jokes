@@ -1,0 +1,139 @@
+'use client'
+import React, { useState } from 'react'
+import { useSignIn, useSignUp } from "@clerk/nextjs";
+import { useRouter } from 'next/navigation';
+import { useForm, SubmitHandler } from "react-hook-form";
+import { Card, CardHeader, Divider, Box, Flex, Input, Button, AbsoluteCenter } from '@chakra-ui/react'
+
+export default function page() {
+  const [verifying, setVerifying] = useState(false);
+  const [isSignIn, setIsSignIn] = useState(false)
+  const router = useRouter()
+  const { signIn, isLoaded: isLoadedSignIn, setActive: signInSetActive } = useSignIn()
+  const { signUp, isLoaded: isLoadedSignUp, setActive } = useSignUp()
+  const { register, handleSubmit, formState: { errors } } = useForm<{email: string, code: string}>();
+
+  const onSubmit: SubmitHandler<{email: string}> = async(data) => {
+    if (!isLoadedSignUp || !isLoadedSignIn) return;
+
+    try {
+      await signUp.create({
+        emailAddress: data.email
+      })
+
+      await signUp.prepareEmailAddressVerification({
+        strategy: 'email_code'
+      })
+
+      setVerifying(true);
+    } catch (err: any) {
+      if (err.errors.some((e: any) => e.code === "form_identifier_exists")) {
+        try {
+          const signInAttempt = await signIn.create({
+            identifier: data.email,
+          });
+
+          const emailAddressId = signInAttempt.supportedFirstFactors.find(factor => factor.strategy === "email_code")
+
+          if(emailAddressId) {
+            await signIn.prepareFirstFactor({
+              strategy: 'email_code',
+              emailAddressId: emailAddressId.emailAddressId
+            })
+
+            setVerifying(true);
+            setIsSignIn(true)
+            signInSetActive({ session: signInAttempt.createdSessionId })
+          } else {
+            throw new Error("Email address ID not found");
+          }
+        } catch (error) {
+          console.error("Sign-in error:", error);
+        }
+      }
+    }
+  }
+
+  const handleVerify: SubmitHandler<{code: string}> = async(data) => {
+    if (!isLoadedSignUp || !isLoadedSignIn) return;
+
+    try {
+      const completeAuthentication = isSignIn ? await signIn.attemptFirstFactor({
+        strategy: "email_code",
+        code: data.code
+      }) : await signUp.attemptEmailAddressVerification({
+        code: data.code
+      })
+
+      if(completeAuthentication.status === 'complete') {
+        await setActive({ session: completeAuthentication.createdSessionId})
+        router.push("/")
+      } else {
+        console.error(JSON.stringify(completeAuthentication, null, 2));
+      }
+    } catch (err) {
+      console.error('Error:', JSON.stringify(err, null, 2));
+    }
+  }
+
+  const onSubmitSocialSignup = async() => {
+    if (!isLoadedSignUp || !isLoadedSignIn) return;
+
+    try {
+      await signUp.authenticateWithRedirect({
+        strategy: 'oauth_google',
+        redirectUrl: '/sign-up/sso-callback',
+        redirectUrlComplete: '/',
+      })
+    } catch (error) {
+      
+    }
+  }
+
+  if (verifying) {
+    return (
+      <Flex justifyContent="center">
+        <Card w={["95%", "65%", "40%"]} p="4" mt="4">
+          <CardHeader>Verify your email</CardHeader>
+          <form onSubmit={handleSubmit(handleVerify)}>
+            <Flex flexDirection="column" gap="4">
+              <Input
+                placeholder='Enter Code' {...register("code")}
+              />
+              <Button textTransform="uppercase" colorScheme='orange' type='submit'>
+                Verify
+              </Button>
+            </Flex>
+          </form>
+        </Card>
+      </Flex>
+    );
+  }
+
+  return (
+    <Flex justifyContent="center">
+      <Card w={["95%", "65%", "40%"]} p="4" mt="4">
+        <CardHeader>
+          Sign In
+        </CardHeader>
+        <Flex flexDirection="column" gap="4">
+        <Button textTransform="uppercase" colorScheme='orange' variant="outline" onClick={onSubmitSocialSignup}>
+          Google
+        </Button>
+          <Box position='relative'>
+            <Divider />
+            <AbsoluteCenter bg='white' px='4'>
+              or
+            </AbsoluteCenter>
+          </Box>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Flex flexDirection="column" gap="4">
+              <Input focusBorderColor='orange.600' placeholder='Enter Email' {...register("email")}/>
+              <Button textTransform="uppercase" colorScheme='orange' type='submit'>Sign In</Button>
+            </Flex>
+          </form>
+        </Flex>
+      </Card>
+    </Flex>
+  )
+}
