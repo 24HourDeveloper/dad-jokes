@@ -1,0 +1,29 @@
+{
+  "jokes": [
+    {
+      "id": 1,
+      "question": "Why don't skeletons fight each other?",
+      "answer": "Because they don't have the guts."
+    },
+    {
+      "id": 2,
+      "question": "What do you call fake spaghetti?",
+      "answer": "An impasta."
+    },
+    {
+      "id": 3,
+      "question": "Why can't a nose be 12 inches long?",
+      "answer": "Because then it would be a foot."
+    },
+    {
+      "id": 4,
+      "question": "Why don't eggs tell jokes?",
+      "answer": "Because they might crack up."
+    },
+    {
+      "id": 5,
+      "question": "How does a penguin build its house?",
+      "answer": "Igloos it together."
+    }
+  ]
+}
