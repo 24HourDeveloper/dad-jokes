@@ -2,11 +2,15 @@
   "name": "only-dad-jokes",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.js"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
@@ -15,6 +19,8 @@
     "@clerk/nextjs": "^5.2.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@prisma/client": "^5.16.2",
+    "@xata.io/client": "^0.0.0-next.v64f10283eb9a098c575590d3ea17600e350321c9",
     "framer-motion": "^11.3.2",
     "json-server": "^1.0.0-beta.1",
     "next": "14.2.5",
@@ -27,6 +33,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "prisma": "^5.16.2",
     "typescript": "^5"
   }
 }
