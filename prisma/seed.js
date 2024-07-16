@@ -1,0 +1,113 @@
+import { PrismaClient } from '@prisma/client'
+
+const jokes = [
+  {question: "Why don't skeletons fight each other?", answer: "They don't have the guts."},
+  {question: "What do you call cheese that isn't yours?", answer: "Nacho cheese."},
+  {question: "Why couldn't the bicycle stand up by itself?", answer: "It was two-tired."},
+  {question: "What did the grape do when he got stepped on?", answer: "Nothing but let out a little wine!"},
+  {question: "Why do chicken coops only have two doors?", answer: "Because if they had four, they’d be chicken sedans!"},
+  {question: "What do you call fake spaghetti?", answer: "An impasta!"},
+  {question: "Why don't scientists trust atoms?", answer: "Because they make up everything!"},
+  {question: "How do you organize a space party?", answer: "You planet."},
+  {question: "Why was the math book sad?", answer: "Because it had too many problems."},
+  {question: "Why don’t some couples go to the gym?", answer: "Because some relationships don’t work out."},
+  {question: "What do you call an alligator in a vest?", answer: "An investigator."},
+  {question: "Why don't eggs tell jokes?", answer: "Because they might crack up."},
+  {question: "How does a penguin build its house?", answer: "Igloos it together."},
+  {question: "Why did the scarecrow win an award?", answer: "Because he was outstanding in his field."},
+  {question: "What do you call a pile of cats?", answer: "A meowtain."},
+  {question: "How do you make holy water?", answer: "You boil the hell out of it."},
+  {question: "Why don't oysters share their pearls?", answer: "Because they are shellfish."},
+  {question: "Why don't some fish play piano?", answer: "Because you can't tuna fish."},
+  {question: "What do you get when you cross a snowman and a vampire?", answer: "Frostbite."},
+  {question: "Why did the golfer bring two pairs of pants?", answer: "In case he got a hole in one."},
+  {question: "What do you call a factory that makes good products?", answer: "A satisfactory."},
+  {question: "How does a taco say grace?", answer: "Lettuce pray."},
+  {question: "Why don't some fish do well in school?", answer: "Because they are below sea level."},
+  {question: "Why did the coffee file a police report?", answer: "It got mugged."},
+  {question: "What do you call a fake noodle?", answer: "An impasta."},
+  {question: "How do you organize a space party?", answer: "You planet."},
+  {question: "Why did the tomato turn red?", answer: "Because it saw the salad dressing."},
+  {question: "Why don't some bicycles work?", answer: "Because they are two-tired."},
+  {question: "What do you get when you cross a snowman with a dog?", answer: "Frostbite."},
+  {question: "Why don’t you see elephants hiding in trees?", answer: "Because they’re so good at it."},
+  {question: "Why did the banana go to the doctor?", answer: "Because it wasn’t peeling well."},
+  {question: "Why don’t seagulls fly over the bay?", answer: "Because then they’d be bay-gulls."},
+  {question: "How do you catch a squirrel?", answer: "Climb up a tree and act like a nut."},
+  {question: "Why did the scarecrow win an award?", answer: "Because he was outstanding in his field."},
+  {question: "What do you call a cow with no legs?", answer: "Ground beef."},
+  {question: "Why don't you ever see elephants hiding in trees?", answer: "Because they're so good at it."},
+  {question: "How does a penguin build its house?", answer: "Igloos it together."},
+  {question: "What do you get if you cross a vampire with a snowman?", answer: "Frostbite."},
+  {question: "Why don't some fish play piano?", answer: "Because you can't tuna fish."},
+  {question: "Why did the tomato turn red?", answer: "Because it saw the salad dressing."},
+  {question: "What do you call a factory that makes good products?", answer: "A satisfactory."},
+  {question: "How do you organize a space party?", answer: "You planet."},
+  {question: "Why did the golfer bring two pairs of pants?", answer: "In case he got a hole in one."},
+  {question: "Why don't scientists trust atoms?", answer: "Because they make up everything!"},
+  {question: "Why don’t some couples go to the gym?", answer: "Because some relationships don’t work out."},
+  {question: "What do you call fake spaghetti?", answer: "An impasta!"},
+  {question: "Why did the coffee file a police report?", answer: "It got mugged."},
+  {question: "What do you call a fake noodle?", answer: "An impasta."},
+  {question: "How do you organize a space party?", answer: "You planet."},
+  {question: "Why did the tomato turn red?", answer: "Because it saw the salad dressing."},
+  {question: "Why don't some bicycles work?", answer: "Because they are two-tired."},
+  {question: "What do you get when you cross a snowman with a dog?", answer: "Frostbite."},
+  {question: "Why don’t you see elephants hiding in trees?", answer: "Because they’re so good at it."},
+  {question: "Why did the banana go to the doctor?", answer: "Because it wasn’t peeling well."},
+  {question: "Why don’t seagulls fly over the bay?", answer: "Because then they’d be bay-gulls."},
+  {question: "How do you catch a squirrel?", answer: "Climb up a tree and act like a nut."},
+  {question: "Why did the scarecrow win an award?", answer: "Because he was outstanding in his field."},
+  {question: "What do you call a cow with no legs?", answer: "Ground beef."},
+  {question: "Why don't you ever see elephants hiding in trees?", answer: "Because they're so good at it."},
+  {question: "How does a penguin build its house?", answer: "Igloos it together."},
+  {question: "What do you get if you cross a vampire with a snowman?", answer: "Frostbite."},
+  {question: "Why don't some fish play piano?", answer: "Because you can't tuna fish."},
+  {question: "Why did the tomato turn red?", answer: "Because it saw the salad dressing."},
+  {question: "What do you call a factory that makes good products?", answer: "A satisfactory."},
+  {question: "How do you organize a space party?", answer: "You planet."},
+  {question: "Why did the golfer bring two pairs of pants?", answer: "In case he got a hole in one."},
+  {question: "Why don't scientists trust atoms?", answer: "Because they make up everything!"},
+  {question: "Why don’t some couples go to the gym?", answer: "Because some relationships don’t work out."},
+  {question: "What do you call fake spaghetti?", answer: "An impasta!"},
+  {question: "Why did the coffee file a police report?", answer: "It got mugged."},
+  {question: "What do you call a fake noodle?", answer: "An impasta."},
+  {question: "How do you organize a space party?", answer: "You planet."},
+  {question: "Why did the tomato turn red?", answer: "Because it saw the salad dressing."},
+  {question: "Why don't some bicycles work?", answer: "Because they are two-tired."},
+  {question: "What do you get when you cross a snowman with a dog?", answer: "Frostbite."},
+  {question: "Why don’t you see elephants hiding in trees?", answer: "Because they’re so good at it."},
+  {question: "Why did the banana go to the doctor?", answer: "Because it wasn’t peeling well."},
+  {question: "Why don’t seagulls fly over the bay?", answer: "Because then they’d be bay-gulls."},
+  {question: "How do you catch a squirrel?", answer: "Climb up a tree and act like a nut."},
+  {question: "Why did the scarecrow win an award?", answer: "Because he was outstanding in his field."},
+  {question: "What do you call a cow with no legs?", answer: "Ground beef."},
+  {question: "Why don't you ever see elephants hiding in trees?", answer: "Because they're so good at it."},
+  {question: "How does a penguin build its house?", answer: "Igloos it together."},
+  {question: "What do you get if you cross a vampire with a snowman?", answer: "Frostbite."},
+  {question: "Why don't some fish play piano?", answer: "Because you can't tuna fish."},
+  {question: "Why did the tomato turn red?", answer: "Because it saw the salad dressing."},
+  {question: "What do you call a factory that makes good products?", answer: "A satisfactory."},
+  {question: "How do you organize a space party?", answer: "You planet."},
+  {question: "Why did the golfer bring two pairs of pants?", answer: "In case he got a hole in one."},
+  {question: "Why don't scientists trust atoms?", answer: "Because they make up everything!"},
+  {question: "Why don’t some couples go to the gym?", answer: "Because some relationships don’t work out."},
+  {question: "What do you call fake spaghetti?", answer: "An impasta!"},
+  {question: "Why did the coffee file a police report?", answer: "It got mugged."}
+]
+
+const prisma = new PrismaClient()
+async function main() {
+  const alice = await prisma.joke.createMany({data: jokes})
+  
+  console.log({ alice })
+}
+main()
+  .then(async () => {
+    await prisma.$disconnect()
+  })
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })
