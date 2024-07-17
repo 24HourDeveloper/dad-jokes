@@ -1,33 +1,24 @@
 import { inngest } from "./client";
 import prisma from "../db";
 
-export const helloWorld = inngest.createFunction(
-  { id: "hello-world" },
-  { event: "test/hello.world" },
+export const addJokeAndUserToJunction = inngest.createFunction(
+  { id: "add-joke-and-user-junction" },
+  { event: "joke/joke.junction" },
   async ({ event, step }) => {
-    await step.sleep("wait-a-moment", "1s");
-    return { event, body: "Hello, World!" };
+    const { userId, jokeId } = event.data;
+    await prisma.userJokes.create({
+      data: {
+        user: {
+          connect: { xata_id: userId },
+        },
+        joke: {
+          connect: { xata_id: jokeId },
+        },
+      },
+    });
+    return { event, body: "Joke added to funny list" };
   }
 );
-
-// export const addJokeAndUserToJunction = inngest.createFunction(
-//   { id: "add-joke-and-user-junction" },
-//   { event: "joke/add.joke.user.junction" },
-//   async ({ event, step }) => {
-//     const { userId, jokeId } = event.data;
-//     await prisma.userJokes.create({
-//       data: {
-//         user: {
-//           connect: { xata_id: userId },
-//         },
-//         joke: {
-//           connect: { xata_id: jokeId },
-//         },
-//       },
-//     });
-//     return { event, body: "Joke added to funny list" };
-//   }
-// );
 
 export const createUserOnSignUp = inngest.createFunction(
   { id: "create-user-on-signup" },

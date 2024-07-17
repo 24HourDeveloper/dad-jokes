@@ -4,7 +4,6 @@ import { useSignIn, useSignUp } from "@clerk/nextjs";
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Card, CardHeader, Divider, Box, Flex, Input, Button, AbsoluteCenter } from '@chakra-ui/react'
-import { inngest } from '../inngest/client';
 
 export default function page() {
   const [verifying, setVerifying] = useState(false);
@@ -68,14 +67,18 @@ export default function page() {
 
       if(completeAuthentication.status === 'complete') {
         await setActive({ session: completeAuthentication.createdSessionId})
-        if(isSignIn === false){
-          await inngest.send({
-            name: "user/create.user.on.signup",
-            data: {
-              email: completeAuthentication.emailAddress,
-              id: completeAuthentication.id
-            },
-          });
+        if(isSignIn === false && 'emailAddress' in completeAuthentication){
+          try {
+            await fetch("/api/inngest-create-user", {
+              method: 'POST',
+              body: JSON.stringify({
+                email: completeAuthentication.emailAddress,
+                id: completeAuthentication.createdUserId
+              })
+            })
+          } catch (error) {
+            console.log('INNGEST ERROR: ', error)
+          }
         }
         router.push("/")
       } else {

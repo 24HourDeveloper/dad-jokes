@@ -1,13 +1,16 @@
 'use client'
 import React from 'react'
 import { Flex, Button } from "@chakra-ui/react";
+import { useUser } from '@clerk/clerk-react';
 
 export default function CardButtons(props: { xata_id: string, disableLaugh: boolean, onNext: () => void }) {
+  const { user } = useUser();
   const addLaughToJoke = async (e: any) => {
     e.preventDefault()
     try {
       await fetch('/api/add-laugh',{
-        method: 'POST', body: JSON.stringify({ id: props.xata_id })
+        method: 'POST',
+        body: JSON.stringify({ jokeId: props.xata_id, userId: user?.id })
       })
     } catch (error) {
       console.log('ERROR: ', error)

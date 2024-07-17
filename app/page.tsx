@@ -3,7 +3,6 @@ import prisma from "./db";
 //import OpenAI from "openai";
 
 export default async function Home() {
-  // const prisma_jokes = await prisma.joke.findMany();
   const jokes = await prisma.joke.findMany();
   // const openai = new OpenAI() TODO: implement openai when I add money on account. For now use jsonserver
   // try {
