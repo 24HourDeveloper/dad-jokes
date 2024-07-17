@@ -1,13 +1,10 @@
-import { PrismaClient } from "@prisma/client";
-import JokeCard from "./components/Card";
+import JokeCard from "./components/Joke";
+import prisma from "./db";
 //import OpenAI from "openai";
-
-const prisma = new PrismaClient();
 
 export default async function Home() {
   // const prisma_jokes = await prisma.joke.findMany();
-  const response = await prisma.joke.findMany();
-  const jokes = response[Math.floor(Math.random() * 90)];
+  const jokes = await prisma.joke.findMany();
   // const openai = new OpenAI() TODO: implement openai when I add money on account. For now use jsonserver
   // try {
   //   const completion = await openai.chat.completions.create({
@@ -21,7 +18,7 @@ export default async function Home() {
   // }
   return (
     <main>
-      <JokeCard jokes={jokes} />
+      <JokeCard jokes={jokes}/>
     </main>
   );
 }

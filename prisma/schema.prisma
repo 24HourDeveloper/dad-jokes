@@ -15,4 +15,5 @@ model joke {
   xata_updatedat DateTime @default(now()) @db.Timestamptz(6)
   question       String
   answer         String
+  laughs         Int      @default(0)
 }
