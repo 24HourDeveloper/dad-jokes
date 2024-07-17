@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react'
+import { useAuth } from '@clerk/clerk-react';
 import { Heading, Flex, Card, Text, Button } from "@chakra-ui/react";
 import CardButtons from './CardButtons'
 
@@ -13,9 +14,9 @@ type Jokes = {
   jokes: Joke[]
 }
 export default function Joke({ jokes } : Jokes) {
-  
   const [showAnswer, setShowAnswer] = useState(false);
   const [randomJoke, setRandomJoke] = useState<Joke | null>(null)
+  const { isSignedIn } = useAuth()
 
   useEffect(() => {
     const joke = jokes[Math.floor(Math.random() * 90)];
@@ -68,14 +69,33 @@ export default function Joke({ jokes } : Jokes) {
           <Text fontSize="xl" textAlign="center">{randomJoke.answer}</Text>
         </Card>
       }
-      <CardButtons
-        {...randomJoke}
-        disableLaugh={!showAnswer}
-        onNext={() => {
-          const joke = jokes[Math.floor(Math.random() * 90)];
-          setShowAnswer(false)
-          setRandomJoke(joke)
-        }}/>
+      {
+        isSignedIn &&
+        <CardButtons
+          {...randomJoke}
+          disableLaugh={!showAnswer}
+          onNext={() => {
+            const joke = jokes[Math.floor(Math.random() * 90)];
+            setShowAnswer(false)
+            setRandomJoke(joke)
+          }}
+        />
+      }
+      {
+        !isSignedIn &&
+        <Button
+          shadow="lg"
+          colorScheme="orange"
+          w={{ base: "95%", lg: "500px" }}
+          onClick={() => {
+            const joke = jokes[Math.floor(Math.random() * 90)];
+            setShowAnswer(false)
+            setRandomJoke(joke)
+          }}
+        >
+          Next Joke
+        </Button>
+      }
     </Flex>
   )
 }

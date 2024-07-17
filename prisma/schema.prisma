@@ -9,11 +9,37 @@ datasource db {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model joke {
-  xata_id        String   @unique(map: "_pgroll_new_joke_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
-  xata_version   Int      @default(0)
-  xata_createdat DateTime @default(now()) @db.Timestamptz(6)
-  xata_updatedat DateTime @default(now()) @db.Timestamptz(6)
+  xata_id        String      @id @unique(map: "_pgroll_new_joke_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int         @default(0)
+  xata_createdat DateTime    @default(now()) @db.Timestamptz(6)
+  xata_updatedat DateTime    @default(now()) @db.Timestamptz(6)
   question       String
   answer         String
-  laughs         Int      @default(0)
+  laughs         Int         @default(0)
+  userXata_id    String?
+  UserJokes      UserJokes[]
+  users          user[]      @relation("UserJokes")
+}
+
+model user {
+  xata_id        String      @id @unique(map: "_pgroll_new_user_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int         @default(0)
+  xata_createdat DateTime    @default(now()) @db.Timestamptz(6)
+  xata_updatedat DateTime    @default(now()) @db.Timestamptz(6)
+  email          String      @unique
+  UserJokes      UserJokes[]
+  jokes          joke[]      @relation("UserJokes")
+}
+
+model UserJokes {
+  userId         String
+  jokeId         String
+  xata_updatedat DateTime @default(now()) @db.Timestamptz(6)
+  xata_id        String   @unique(map: "UserJokes__pgroll_new_xata_id_key") @default(dbgenerated("('rec_'::text || (xata_private.xid())::text)"))
+  xata_version   Int      @default(0)
+  xata_createdat DateTime @default(now()) @db.Timestamptz(6)
+  joke           joke     @relation(fields: [jokeId], references: [xata_id])
+  user           user     @relation(fields: [userId], references: [xata_id])
+
+  @@id([userId, jokeId])
 }

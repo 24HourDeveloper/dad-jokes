@@ -67,6 +67,19 @@ export default function page() {
 
       if(completeAuthentication.status === 'complete') {
         await setActive({ session: completeAuthentication.createdSessionId})
+        if(isSignIn === false && 'emailAddress' in completeAuthentication){
+          try {
+            await fetch("/api/inngest-create-user", {
+              method: 'POST',
+              body: JSON.stringify({
+                email: completeAuthentication.emailAddress,
+                id: completeAuthentication.createdUserId
+              })
+            })
+          } catch (error) {
+            console.log('INNGEST ERROR: ', error)
+          }
+        }
         router.push("/")
       } else {
         console.error(JSON.stringify(completeAuthentication, null, 2));
