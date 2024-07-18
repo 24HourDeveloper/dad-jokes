@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useSignIn, useSignUp } from "@clerk/nextjs";
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Card, CardHeader, Text, Flex, Input, Button, AbsoluteCenter } from '@chakra-ui/react'
+import { Card, CardHeader, Text, Flex, Input, Button } from '@chakra-ui/react'
 
 export default function page() {
   const [verifying, setVerifying] = useState(false);
@@ -132,10 +132,10 @@ export default function page() {
           Sign In
         </CardHeader>
         <Flex flexDirection="column" gap="4">
-        <Button textTransform="uppercase" colorScheme='teal' variant="outline" onClick={onSubmitSocialSignup}>
+        {/* <Button textTransform="uppercase" colorScheme='teal' variant="outline" onClick={onSubmitSocialSignup}>
           Google
         </Button>
-          <Text color="white" textAlign="center">OR</Text>
+          <Text color="white" textAlign="center">OR</Text> */}
           <form onSubmit={handleSubmit(onSubmit)}>
             <Flex flexDirection="column" gap="4">
               <Input focusBorderColor='teal.600' color="white" placeholder='Enter Email' {...register("email")}/>

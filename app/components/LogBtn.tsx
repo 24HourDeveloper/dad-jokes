@@ -8,7 +8,20 @@ export default function LogBtn() {
   const { userId } = useAuth()
   const { signOut } = useClerk()
   if(!userId){
-    return <Link href='/sign-in' textTransform="uppercase" color="white" bg="teal.500" _hover={{ bg: 'teal.700' }} p="2" rounded="lg">Sign In</Link>
+    return (
+      <Link
+        p="2"
+        rounded="lg"
+        href='/sign-in'
+        color="white"
+        bg="teal.500"
+        textTransform="uppercase"
+        _hover={{ bg: 'teal.700' }}
+        fontSize={["sm", "lg"]}
+      >
+        Sign In
+      </Link>
+    )
   }
   return (
     <Button
