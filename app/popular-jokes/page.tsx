@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 import prisma from '../db'
 import Card from '../components/Card'
 
@@ -12,6 +12,10 @@ export default async function PopularPage() {
       laughs: 'desc'
     }
   })
+
+  if(allFunnyJokes.length === 0){
+    return <Heading color="white" textAlign="center">No votes at this time</Heading>
+  }
   return (
     allFunnyJokes.map(joke => {
       return (
