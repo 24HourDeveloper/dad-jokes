@@ -5,9 +5,10 @@ type ContainerTypes = {
   showAnswer?: boolean;
   joke: { question: string; answer: string, laughs: number};
   onClick?: () => void;
+  showVote?: boolean;
 }
 
-export default function Container({ showAnswer, joke, onClick }: ContainerTypes) {
+export default function Container({ showAnswer, joke, onClick, showVote }: ContainerTypes) {
   return (
     <>
       <Card
@@ -18,23 +19,26 @@ export default function Container({ showAnswer, joke, onClick }: ContainerTypes)
         borderColor="teal"
         pos="relative"
       >
-        <Box
-          pos="absolute"
-          p="2"
-          bg="white"
-          w="8"
-          h="8"
-          rounded="full"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          left={["-5px","-15px"]}
-          top="-8px"
-          border="2px"
-          borderColor="teal"
-        >
-          {joke.laughs}
-        </Box>
+        {
+          showVote &&
+          <Box
+            pos="absolute"
+            p="2"
+            bg="white"
+            w="8"
+            h="8"
+            rounded="full"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            left={["-5px","-15px"]}
+            top="-8px"
+            border="2px"
+            borderColor="teal"
+          >
+            {joke.laughs}
+          </Box>
+        }
         <Flex flexDirection="column" gap="4">
           <Heading size="lg">{joke.question}</Heading>
           {
