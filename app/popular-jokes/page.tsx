@@ -7,6 +7,9 @@ export default async function PopularPage() {
   const allFunnyJokes = await prisma.joke.findMany({
     where: {
       laughs: {gt: 0}
+    },
+    orderBy: {
+      laughs: 'desc'
     }
   })
   return (

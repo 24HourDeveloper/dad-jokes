@@ -5,10 +5,10 @@ import LogBtn from './LogBtn';
 
 export default function Header() {
   return (
-    <Box bg="teal.200" p="4" as='nav' display="flex" justifyContent="space-between" alignItems="center" shadow="md" borderBottom="2px" borderColor="teal">
+    <Box bg="teal.200" p={["2", "4"]} as='nav' display="flex" justifyContent="space-between" alignItems="center" shadow="md" borderBottom="2px" borderColor="teal">
       <Flex alignItems="center" gap="4">
         <Link as={NextLink} href='/'>
-          <Heading size="xl" textTransform="uppercase" sx={{WebkitTextStroke: 1.5, WebkitTextFillColor: 'transparent'}}>Dad Jokes</Heading>
+          <Heading size={["md", "xl"]} textTransform="uppercase" sx={{WebkitTextStroke: 1.5, WebkitTextFillColor: 'transparent'}}>Dad Jokes</Heading>
         </Link>
         <Center height='50px'>
           <Divider orientation='vertical' borderColor="teal" />
