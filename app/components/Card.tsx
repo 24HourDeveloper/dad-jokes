@@ -28,7 +28,7 @@ export default function Container({ showAnswer, joke, onClick }: ContainerTypes)
           display="flex"
           alignItems="center"
           justifyContent="center"
-          left="-15px"
+          left={["-5px","-15px"]}
           top="-8px"
           border="2px"
           borderColor="teal"
