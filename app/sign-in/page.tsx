@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useSignIn, useSignUp } from "@clerk/nextjs";
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Card, CardHeader, Divider, Box, Flex, Input, Button, AbsoluteCenter } from '@chakra-ui/react'
+import { Card, CardHeader, Text, Flex, Input, Button, AbsoluteCenter } from '@chakra-ui/react'
 
 export default function page() {
   const [verifying, setVerifying] = useState(false);
@@ -106,14 +106,16 @@ export default function page() {
   if (verifying) {
     return (
       <Flex justifyContent="center">
-        <Card w={["95%", "65%", "40%"]} p="4" mt="4">
-          <CardHeader>Verify your email</CardHeader>
+        <Card w={["95%", "65%", "40%"]} p="4" mt="4" bg="transparent">
+          <CardHeader color="white">Verify your email</CardHeader>
           <form onSubmit={handleSubmit(handleVerify)}>
             <Flex flexDirection="column" gap="4">
               <Input
+                focusBorderColor='teal.600'
+                color="white"
                 placeholder='Enter Code' {...register("code")}
               />
-              <Button textTransform="uppercase" colorScheme='orange' type='submit'>
+              <Button textTransform="uppercase" colorScheme='teal' type='submit'>
                 Verify
               </Button>
             </Flex>
@@ -125,24 +127,19 @@ export default function page() {
 
   return (
     <Flex justifyContent="center">
-      <Card w={["95%", "65%", "40%"]} p="4" mt="4">
-        <CardHeader>
+      <Card w={["95%", "65%", "40%"]} p="4" mt="4" bg="transparent">
+        <CardHeader color="white">
           Sign In
         </CardHeader>
         <Flex flexDirection="column" gap="4">
-        <Button textTransform="uppercase" colorScheme='orange' variant="outline" onClick={onSubmitSocialSignup}>
+        <Button textTransform="uppercase" colorScheme='teal' variant="outline" onClick={onSubmitSocialSignup}>
           Google
         </Button>
-          <Box position='relative'>
-            <Divider />
-            <AbsoluteCenter bg='white' px='4'>
-              or
-            </AbsoluteCenter>
-          </Box>
+          <Text color="white" textAlign="center">OR</Text>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Flex flexDirection="column" gap="4">
-              <Input focusBorderColor='orange.600' placeholder='Enter Email' {...register("email")}/>
-              <Button textTransform="uppercase" colorScheme='orange' type='submit'>Sign In</Button>
+              <Input focusBorderColor='teal.600' color="white" placeholder='Enter Email' {...register("email")}/>
+              <Button textTransform="uppercase" colorScheme='teal' type='submit'>Sign In</Button>
             </Flex>
           </form>
         </Flex>
