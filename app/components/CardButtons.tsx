@@ -18,10 +18,10 @@ export default function CardButtons(props: { xata_id: string, disableLaugh: bool
   }
   return (
     <Flex justifyContent="space-between" w={{ base: "95%", lg: "500px" }}>
-      <Button w="48%" colorScheme="orange" shadow="lg" onClick={addLaughToJoke} isDisabled={props.disableLaugh}>
+      <Button w="48%" colorScheme="teal" shadow="lg" onClick={addLaughToJoke} isDisabled={props.disableLaugh}>
         Laugh
       </Button>
-      <Button w="48%" variant="outline" colorScheme="orange" shadow="lg" onClick={props.onNext}>
+      <Button w="48%" variant="outline" colorScheme="teal" shadow="lg" onClick={props.onNext}>
         Crickets
       </Button>
     </Flex>
